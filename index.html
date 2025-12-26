@@ -775,32 +775,6 @@
         }
     </style>
 </head>
-<script>
-    // Chặn chuột phải
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        alert("Xin chào! Đây là thiệp cưới của Tấn Tài & Linh Tâm ❤️");
-    });
-
-    // Chặn các phím tắt xem code (F12, Ctrl+U, Ctrl+Shift+I,...)
-    document.onkeydown = function(e) {
-        if (event.keyCode == 123) { // F12
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+Shift+C
-            return false;
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
-            return false;
-        }
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
-            return false;
-        }
-    }
-</script>
 <body>
     <div class="container">
         <header class="hero-header reveal">
@@ -1306,4 +1280,30 @@
         }
     </style>
 </body>
+<script>
+    // Chặn chuột phải
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        alert("Xin chào! Đây là thiệp cưới của Tấn Tài & Linh Tâm ❤️");
+    });
+
+    // Chặn các phím tắt xem code (F12, Ctrl+U, Ctrl+Shift+I,...)
+    document.onkeydown = function(e) {
+        if (event.keyCode == 123) { // F12
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+Shift+C
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+            return false;
+        }
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+            return false;
+        }
+    }
+</script>
 </html>
