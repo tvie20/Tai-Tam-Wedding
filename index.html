@@ -1346,8 +1346,14 @@
     </style>
 </body>
 <script>
+    // 1. NGĂN TRÌNH DUYỆT TỰ CUỘN KHI RELOAD TRANG
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
     /* --- SCRIPT TẮT PRELOADER KHI TẢI XONG --- */
         window.addEventListener("load", function() {
+            window.scrollTo(0, 0); // Đảm bảo trang ở đầu khi tải xong
             const preloader = document.getElementById('preloader');
             // Đợi thêm 0.5 giây cho mượt rồi mới tắt
             setTimeout(() => {
