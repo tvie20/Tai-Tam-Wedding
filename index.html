@@ -588,16 +588,16 @@
             /* --- CÁC ELEMENT BỔ SUNG ĐỂ BẠN TỰ CHỈNH --- */
             
             img[src*="text-begin.png"] {
-                width: 80% !important;
+                width: 90% !important;
                 max-width: none !important;
-                margin-top: 70px !important;
+                margin-top: 60px !important;
             }
 
             /* 1. Ảnh: Ngày tháng (đoạn đầu) */
             img[src*="text-date.png"] {
-                width: 50% !important; /* Chỉnh độ rộng */
-                margin-top: 100px !important; /* Chỉnh khoảng cách trên */
-                margin-bottom: 0 !important; /* Chỉnh khoảng cách dưới */
+                width: 60% !important; /* Chỉnh độ rộng */
+                margin-top: 80px !important; /* Chỉnh khoảng cách trên */
+                margin-bottom: 20px !important; /* Chỉnh khoảng cách dưới */
             }
 
             /* 2. Ảnh: Tên Cha Mẹ */
@@ -652,7 +652,6 @@
                 width: 120px !important;
                 margin-top: 20px !important;
                 margin-bottom: 20px !important;
-                margin-left: 110px !important;
             }
 
             /* 3. Fix Hoa (Dùng % để neo vào góc màn hình điện thoại) */
@@ -773,9 +772,75 @@
             .time-box .time-number { font-size: 2rem !important; }
             .separator { font-size: 2rem !important; }
         }
+
+        /* --- CSS CHO PRELOADER --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #fffef8; /* Màu nền giống trang web */
+            z-index: 999999; /* Đảm bảo nằm trên tất cả mọi thứ */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease-out; /* Hiệu ứng mờ dần khi tắt */
+        }
+
+        .loader-icon {
+            font-size: 30px;
+            color: #5d6e41; /* Màu chủ đạo */
+            margin-bottom: 15px;
+            animation: heartBeat 1.2s infinite ease-in-out;
+        }
+
+        .loader-text {
+            font-family: var(--font-body); /* Dùng font Quicksand giống form */
+            font-weight: 600; /* Cho chữ đậm lên một chút cho dễ đọc */
+            color: #5d6e41;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            animation: fadeText 1.2s infinite ease-in-out;
+        }
+
+        /* Tạo dấu 3 chấm chuyển động */
+        .loader-text::after {
+            content: ''; /* Ban đầu rỗng */
+            display: inline-block;
+            width: 20px; /* Giữ khoảng trống để chữ không bị giật khi dấu chấm hiện ra */
+            text-align: left;
+            animation: typing 1.5s infinite steps(1); /* steps(1) giúp dấu chấm hiện dứt khoát */
+        }
+
+        /* Hiệu ứng gõ dấu chấm */
+        @keyframes typing {
+            0%  { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100%{ content: ''; }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.3); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeText {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
+    <div id="preloader">
+        <i class="fa-solid fa-heart loader-icon"></i>
+        <div class="loader-text">Chờ xíu nha</div>
+    </div>
+
     <div class="container">
         <header class="hero-header reveal">
             <img src="src/wedding-cover.png" alt="Ảnh cưới Tấn Tài - Linh Tâm" class="main-cover">
@@ -797,7 +862,7 @@
             <img src="src/flower2.png" class="flower-decor reveal" style="width: 350px; top: 480px; left: -84px;">
             
             <div class="section-gap reveal">
-                <img src="src/text-date.png" alt="Ngày tháng" class="img-block" style="width: 50%; margin-top: 120px;">
+                <img src="src/text-date.png" alt="Ngày tháng" class="img-block" style="width: 60%; margin-top: 90px;">
             </div>
 
             <img src="src/flower3.png" class="flower-decor reveal" style="width: 150px; top: 800px; left: 100px;">
@@ -1281,6 +1346,19 @@
     </style>
 </body>
 <script>
+    /* --- SCRIPT TẮT PRELOADER KHI TẢI XONG --- */
+        window.addEventListener("load", function() {
+            const preloader = document.getElementById('preloader');
+            // Đợi thêm 0.5 giây cho mượt rồi mới tắt
+            setTimeout(() => {
+                preloader.style.opacity = '0'; // Làm mờ
+                setTimeout(() => {
+                    preloader.style.display = 'none'; // Xóa hẳn
+                }, 600); // Thời gian này khớp với transition trong CSS
+            }, 500);
+        });
+        
+    /* --- SCRIPT CHẶN XEM CODE Nguồn --- */
     // Chặn chuột phải
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
