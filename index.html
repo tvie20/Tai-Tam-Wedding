@@ -1116,33 +1116,62 @@
         }, 1000);
 
         /* --- SCRIPT MUSIC --- */
-        function toggleMusic() {
-            var music = document.getElementById("bg-music");
-            var btnText = document.querySelector(".music-btn-fixed span");
-            var btnIcon = document.querySelector(".music-btn-fixed i");
-            
-            if (music.paused) {
-                music.play();
-                btnText.innerHTML = "ĐANG PHÁT...";
-                btnIcon.classList.add("music-icon-spin"); // Quay icon
-                btnIcon.classList.remove("fa-play");
-                btnIcon.classList.add("fa-music");
-            } else {
-                music.pause();
-                btnText.innerHTML = "MỘT ĐỜI"; // Hiện lại tên bài hát
-                btnIcon.classList.remove("music-icon-spin"); // Dừng quay
-                btnIcon.classList.remove("fa-music");
-                btnIcon.classList.add("fa-play"); // Hiện icon play
-            }
+        const music = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("music-btn");
+    const btnIcon = musicBtn.querySelector("i");
+    const btnText = musicBtn.querySelector("span");
+
+    // Hàm chỉ nhiệm vụ cập nhật giao diện (không can thiệp phát nhạc)
+    function updateMusicUI(isPlaying) {
+        if (isPlaying) {
+            btnText.innerHTML = "ĐANG PHÁT...";
+            btnIcon.className = "fa-solid fa-music music-icon-spin"; // Icon xoay
+        } else {
+            btnText.innerHTML = "MỘT ĐỜI";
+            btnIcon.className = "fa-solid fa-play"; // Icon đứng yên
         }
-        
-        // (Tuỳ chọn) Tự động phát nhạc khi người dùng chạm vào màn hình lần đầu
-        document.body.addEventListener('click', function() {
-            var music = document.getElementById("bg-music");
-            if(music.paused) {
-                toggleMusic();
+    }
+
+    // Hàm xử lý Play/Pause có kiểm tra lỗi
+    function handleMusicToggle(forcePlay = false) {
+        if (music.paused || forcePlay) {
+            // Thử phát nhạc
+            var playPromise = music.play();
+            
+            // Xử lý kết quả trả về từ trình duyệt
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Thành công: Nhạc kêu -> Đổi giao diện
+                    updateMusicUI(true);
+                })
+                .catch(error => {
+                    // Thất bại (do trình duyệt chặn): Giữ nguyên giao diện Tắt
+                    console.log("Autoplay bị chặn hoặc lỗi: " + error);
+                    updateMusicUI(false); 
+                    music.pause();
+                });
             }
-        }, { once: true }); // Chỉ chạy 1 lần duy nhất
+        } else {
+            // Nếu đang phát thì tắt đi
+            music.pause();
+            updateMusicUI(false);
+        }
+    }
+
+    // 1. Sự kiện khi bấm nút nhạc (Ưu tiên cao nhất)
+    if(musicBtn) {
+        musicBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Ngăn không cho kích hoạt sự kiện body bên dưới
+            handleMusicToggle(); 
+        });
+    }
+
+    // 2. Tự động phát khi chạm vào màn hình lần đầu (nếu nhạc chưa phát)
+    document.body.addEventListener('click', function() {
+        if(music.paused) {
+            handleMusicToggle(true);
+        }
+    }, { once: true }); // Chỉ chạy 1 lần duy nhất khi khách mới vào
 
         /* --- SCRIPT GỬI FORM VỀ GOOGLE SHEETS --- */
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzc4SuOjS7RadTu2YuyYg_-3UalYmhVcSjc0THKKhMdt8u4DpTlptMDG0PIzajgyzs/exec';
